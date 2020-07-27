@@ -19,7 +19,6 @@
  */
 package com.amazonaws.athena.hms.handler;
 
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.athena.hms.ListPartitionsRequest;
 import com.amazonaws.athena.hms.ListPartitionsResponse;
@@ -29,12 +28,10 @@ import com.amazonaws.services.lambda.runtime.Context;
 import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.thrift.TException;
 import org.apache.thrift.TSerializer;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class ListPartitionsHandler extends BaseHMSHandler<ListPartitionsRequest, ListPartitionsResponse>

@@ -19,12 +19,10 @@
  */
 package com.amazonaws.athena.hms.handler;
 
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.athena.hms.TableExistsRequest;
 import com.amazonaws.athena.hms.TableExistsResponse;
 import com.amazonaws.services.lambda.runtime.Context;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class TableExistsHandler extends BaseHMSHandler<TableExistsRequest, TableExistsResponse>

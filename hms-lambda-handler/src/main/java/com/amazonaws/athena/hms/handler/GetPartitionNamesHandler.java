@@ -21,12 +21,9 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.GetPartitionNamesRequest;
 import com.amazonaws.athena.hms.GetPartitionNamesResponse;
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
-
 import java.util.List;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class GetPartitionNamesHandler extends BaseHMSHandler<GetPartitionNamesRequest, GetPartitionNamesResponse>

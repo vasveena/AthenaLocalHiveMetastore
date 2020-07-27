@@ -26,8 +26,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.thrift.TDeserializer;
 import org.apache.thrift.TSerializer;
-
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 import java.nio.charset.StandardCharsets;

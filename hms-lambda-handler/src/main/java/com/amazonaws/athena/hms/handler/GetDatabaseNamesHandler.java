@@ -21,11 +21,9 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.GetDatabaseNamesRequest;
 import com.amazonaws.athena.hms.GetDatabaseNamesResponse;
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
 import org.apache.hadoop.hive.metastore.api.Database;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;

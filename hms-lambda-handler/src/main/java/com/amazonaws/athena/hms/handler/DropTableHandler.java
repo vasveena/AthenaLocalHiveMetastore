@@ -21,10 +21,8 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.DropTableRequest;
 import com.amazonaws.athena.hms.DropTableResponse;
-//import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class DropTableHandler extends BaseHMSHandler<DropTableRequest, DropTableResponse>

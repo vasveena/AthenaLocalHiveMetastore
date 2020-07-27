@@ -25,7 +25,6 @@ import javax.security.auth.login.LoginException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-//import java.lang.InterruptedException;
 
 import java.io.File;
 import java.io.InputStream;
@@ -37,8 +36,6 @@ import org.apache.hadoop.hive.conf.HiveConf;
 
 public class EmbeddedHiveMetaStoreClientFactory implements HiveMetaStoreClientFactory
 {
-  private static final String HIVE_SITE = "hive-site.xml";
-  private static final String CORE_SITE = "core-site.xml";
   private final HiveMetaStoreConf conf;
   private HiveMetaStoreClient client;
 
@@ -54,25 +51,13 @@ public class EmbeddedHiveMetaStoreClientFactory implements HiveMetaStoreClientFa
     return conf;
   }
 
-  //private EmbeddedHiveMetaStoreClient createClient()
   private HiveMetaStoreClient createClient()
   {
     try {
-      // create the embedded Hive Metastore client
-      // return new EmbeddedHiveMetaStoreClient(conf.toHiveConf());
-
-      /*Configuration hadoopConf = new Configuration();
-      addResourceFromClassPath(hadoopConf, CORE_SITE);
-      addResourceFromClassPath(hadoopConf, HIVE_SITE);*/
-
       System.out.println("Creating Embedded Hive Client");
-
       client = new HiveMetaStoreClient(conf.toHiveConf());
-
       return client;
     }
-    //catch (TException | IOException | InterruptedException | LoginException | URISyntaxException | Exception e)
-    //
     catch (Exception e)
     {
       throw new RuntimeException("Failed to create HiveMetaStoreClient", e);
@@ -105,5 +90,4 @@ public class EmbeddedHiveMetaStoreClientFactory implements HiveMetaStoreClientFa
     InputStream in = getClass().getResourceAsStream("/" + fileName);
     conf.addResource(in);
   }
-
 }

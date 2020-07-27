@@ -23,8 +23,6 @@ import com.amazonaws.athena.hms.AppendPartitionRequest;
 import com.amazonaws.athena.hms.AppendPartitionResponse;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
-
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class AppendPartitionHandler extends BaseHMSHandler<AppendPartitionRequest, AppendPartitionResponse>

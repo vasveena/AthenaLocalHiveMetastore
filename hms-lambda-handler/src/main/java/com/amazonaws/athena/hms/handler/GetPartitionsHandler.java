@@ -21,16 +21,13 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.GetPartitionsRequest;
 import com.amazonaws.athena.hms.GetPartitionsResponse;
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
 import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.thrift.TSerializer;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class GetPartitionsHandler extends BaseHMSHandler<GetPartitionsRequest, GetPartitionsResponse>

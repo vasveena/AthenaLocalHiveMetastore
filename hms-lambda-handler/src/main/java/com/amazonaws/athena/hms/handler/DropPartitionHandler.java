@@ -21,10 +21,8 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.DropPartitionRequest;
 import com.amazonaws.athena.hms.DropPartitionResponse;
-//import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class DropPartitionHandler extends BaseHMSHandler<DropPartitionRequest, DropPartitionResponse>

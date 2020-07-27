@@ -22,6 +22,15 @@ package com.amazonaws.athena.hms;
 import com.amazonaws.athena.conf.Configuration;
 import com.google.common.base.Strings;
 import org.apache.hadoop.hive.conf.HiveConf;
+import com.amazonaws.services.kms.AWSKMS;
+import com.amazonaws.services.kms.AWSKMSClientBuilder;
+import com.amazonaws.services.kms.model.DecryptRequest;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.util.Base64;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HiveMetaStoreConf
 {
@@ -32,9 +41,12 @@ public class HiveMetaStoreConf
   public static final String HMS_HANDLER_NAME_PREFIX = "hive.metastore.handler.name.prefix";
   public static final String DEFAULT_HMS_HANDLER_NAME_PREFIX = "com.amazonaws.athena.hms.handler.";
   public static final long DEFAULT_HMS_RESPONSE_SPILL_THRESHOLD = 4 * 1024 * 1024; // 4MB
-  public static final String ENV_HMS_URIS = "HMS_URIS";
   public static final String ENV_SPILL_LOCATION = "SPILL_LOCATION";
-
+  public static final String ENV_CONNECTION_URL = "CONNECTION_URL";
+  public static final String ENV_DRIVER_NAME = "DRIVER_NAME";
+  public static final String ENV_USER_NAME = "USER_NAME";
+  public static final String ENV_PASSWORD = "PASSWORD";
+  public static final String ENV_WAREHOUSE_LOCATION = "WAREHOUSE_LOCATION";
 
   //Hive configuration "javax.jdo.option.ConnectionURL"
   private String connectionURL;
@@ -137,6 +149,22 @@ public class HiveMetaStoreConf
     this.handlerNamePrefix = handlerNamePrefix;
   }
 
+  private static String decryptKey(String envVar) {
+    byte[] encryptedKey = Base64.decode(System.getenv(envVar));
+    Map<String, String> encryptionContext = new HashMap<>();
+    encryptionContext.put("LambdaFunctionName",
+            System.getenv("AWS_LAMBDA_FUNCTION_NAME"));
+
+    AWSKMS client = AWSKMSClientBuilder.defaultClient();
+
+    DecryptRequest request = new DecryptRequest()
+            .withCiphertextBlob(ByteBuffer.wrap(encryptedKey))
+            .withEncryptionContext(encryptionContext);
+
+    ByteBuffer plainTextKey = client.decrypt(request).getPlaintext();
+    return new String(plainTextKey.array(), Charset.forName("UTF-8"));
+  }
+
   /*
    * convert this configuration class to an HiveConf object
    *
@@ -146,18 +174,7 @@ public class HiveMetaStoreConf
   {
     HiveConf conf = new HiveConf();
 
-    System.out.println("User name: " +connectionUserName);
-    System.out.println("JDBC: " +connectionURL);
-    System.out.println("Password: " +connectionPassword);
-    System.out.println("Driver: " +connectionDriverName);
-    System.out.println("Metastore: " +metaWarehouse);
-
-    /* hiveConf.setVar(HiveConf.ConfVars.METASTORE_CONNECTION_USER_NAME,"mars");
-    hiveConf.setVar(HiveConf.ConfVars.METASTOREPWD,"Marsffhh2$68");
-    hiveConf.setVar(HiveConf.ConfVars.METASTORE_CONNECTION_DRIVER,"org.mariadb.jdbc.Driver");
-    hiveConf.setVar(HiveConf.ConfVars.METASTORECONNECTURLKEY,
-            "jdbc:mysql://hivemetadb-instance-1.cxlolvlnaden.us-east-1.rds.amazonaws.com:3306/hivedb");
-    hiveConf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE,"s3a://vasveena-test-finr/rootdb"); */
+    System.out.println("Initializing configurations for warehouse: " +metaWarehouse);
 
     conf.setVar(HiveConf.ConfVars.METASTORE_CONNECTION_USER_NAME, connectionUserName);
     conf.setVar(HiveConf.ConfVars.METASTOREPWD, connectionPassword);
@@ -205,14 +222,37 @@ public class HiveMetaStoreConf
   public static HiveMetaStoreConf loadAndOverrideWithEnvironmentVariables()
   {
     HiveMetaStoreConf conf = load();
-    // only support HMS_URIS and SPILL_LOCATION for now since most likely we only need to override them
-    String hmsUris = System.getenv(ENV_HMS_URIS);
-    if (!Strings.isNullOrEmpty(hmsUris)) {
-      conf.setMetastoreUri(""); //set to empty string for Hive local client
-    }
-    String spillLocation = System.getenv(ENV_SPILL_LOCATION);
+    // Set to empty string for Hive local client
+    conf.setMetastoreUri("");
+
+    String spillLocation = decryptKey(ENV_SPILL_LOCATION);
     if (!Strings.isNullOrEmpty(spillLocation)) {
       conf.setResponseSpillLocation(spillLocation);
+    }
+
+    String connectionURL = decryptKey(ENV_CONNECTION_URL);
+    if (!Strings.isNullOrEmpty(connectionURL)) {
+      conf.setConnectionURL(connectionURL);
+    }
+
+    String connectionDriverName = decryptKey(ENV_DRIVER_NAME);
+    if (!Strings.isNullOrEmpty(connectionDriverName)) {
+      conf.setConnectionDriverName(connectionDriverName);
+    }
+
+    String connectionUserName = decryptKey(ENV_USER_NAME);
+    if (!Strings.isNullOrEmpty(connectionUserName)) {
+      conf.setConnectionUserName(connectionUserName);
+    }
+
+    String connectionPassword = decryptKey(ENV_PASSWORD);
+    if (!Strings.isNullOrEmpty(connectionPassword)) {
+      conf.setConnectionPassword(connectionPassword);
+    }
+
+    String metaWarehouse = decryptKey(ENV_WAREHOUSE_LOCATION);
+    if (!Strings.isNullOrEmpty(metaWarehouse)) {
+      conf.setMetastoreWarehouse(metaWarehouse);
     }
 
     return conf;

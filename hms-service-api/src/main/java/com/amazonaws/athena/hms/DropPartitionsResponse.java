@@ -21,15 +21,15 @@ package com.amazonaws.athena.hms;
 
 public class DropPartitionsResponse extends ApiResponse
 {
-  private String result;
+  private boolean successful;
 
-  public String getResult()
+  public boolean isSuccessful()
   {
-    return result;
+    return successful;
   }
 
-  public void setResult(String result)
+  public void setSuccessful(boolean successful)
   {
-    this.result = result;
+    this.successful = successful;
   }
 }

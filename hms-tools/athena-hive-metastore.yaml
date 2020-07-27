@@ -29,11 +29,25 @@ Parameters:
     Type: Number
   LambdaMemory:
     Description: "Lambda memory in MB (min 128 - 3008 max)."
-    Default: 1024
+    Default: 2048
     Type: Number
-  HMSUris:
-    Description: "Hive metastore URIs"
+  ConnectionURL:
+    Description: "Connection URL"
     Type: String
+  DriverName:
+    Description: "Driver Name"
+    Default: "org.mariadb.jdbc.Driver"
+    Type: String
+  UserName:
+    Description: "User Name"
+    Type: String
+  Password:
+    Description: "Password"
+    Type: String
+  WarehouseLocation:
+    Description: "The S3 location where default DBs are created. Format: bucket/prefix"
+    Type: String
+    Default: "athena-hms-warehouse"
   VPCSubnetIds:
     Description: "Comma separated VPC subnet IDs where hive metastore is in."
     Type: CommaDelimitedList
@@ -47,8 +61,12 @@ Resources:
     Properties:
       Environment:
         Variables:
-          HMS_URIS: !Ref HMSUris
           SPILL_LOCATION: !Sub "s3://${SpillLocation}"
+          CONNECTION_URL: !Ref ConnectionURL
+          DRIVER_NAME: !Ref DriverName
+          USER_NAME: !Ref UserName
+          PASSWORD: !Ref Password
+          WAREHOUSE_LOCATION: !Sub "s3a://${WarehouseLocation}"
       FunctionName: !Sub "${LambdaFuncName}"
       Handler: "com.amazonaws.athena.hms.HiveMetaStoreLambdaFunc::handleRequest"
       CodeUri: "../hms-lambda-func/target/hms-lambda-func-1.0-SNAPSHOT-withdep.jar"

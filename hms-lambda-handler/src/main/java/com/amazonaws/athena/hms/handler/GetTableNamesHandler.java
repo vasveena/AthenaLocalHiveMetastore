@@ -21,15 +21,12 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.GetTableNamesRequest;
 import com.amazonaws.athena.hms.GetTableNamesResponse;
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
-
 import java.util.Set;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 import org.apache.thrift.TException;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class GetTableNamesHandler extends BaseHMSHandler<GetTableNamesRequest, GetTableNamesResponse>

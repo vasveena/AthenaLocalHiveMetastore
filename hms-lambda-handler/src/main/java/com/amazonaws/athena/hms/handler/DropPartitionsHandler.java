@@ -21,15 +21,13 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.DropPartitionsRequest;
 import com.amazonaws.athena.hms.DropPartitionsResponse;
-//import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
 import org.apache.hadoop.hive.metastore.api.DropPartitionsResult;
 import org.apache.thrift.TSerializer;
-
 import java.nio.charset.StandardCharsets;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
-
+import org.apache.hadoop.hive.metastore.api.Partition;
 import org.apache.thrift.TException;
 import java.util.List;
 
@@ -45,19 +43,19 @@ public class DropPartitionsHandler extends BaseHMSHandler<DropPartitionsRequest,
     return client.listPartitionNames(dbName, tableName, maxSize);
   }
 
-  public DropPartitionsResult dropPartitions(String dbName, String tableName,
+  public boolean dropPartitions(String dbName, String tableName,
                                              List<String> partNames, HiveMetaStoreClient client) throws TException
   {
+    boolean deleteData = false;
+
     if (partNames == null) {
       return dropPartitions(dbName, tableName, getPartitionNames(dbName, tableName, (short) -1, client), client);
     }
     if (partNames.isEmpty()) {
-      return null;
+      return true;
     }
-    //return client.dropPartitions(new DropPartitionsRequest(dbName,
-    //   tableName, RequestPartsSpec.names(partNames)));
-    // return client.dropPartitions(dbName, tableName, getPartitionNames(dbName, tableName, (short) -1), true, true);
-    return null;
+
+    return client.dropPartition(dbName, tableName, partNames, deleteData);
   }
 
   @Override
@@ -68,13 +66,10 @@ public class DropPartitionsHandler extends BaseHMSHandler<DropPartitionsRequest,
       context.getLogger().log("Connecting to embedded HMS client");
       HiveMetaStoreClient client = getClient();
       context.getLogger().log("Dropping partitions for DB " + request.getDbName() + " table " + request.getTableName());
-      DropPartitionsResult result = dropPartitions(request.getDbName(), request.getTableName(), request.getPartNames(), client);
-      context.getLogger().log("Dropped partitions: " + result);
+      boolean successful = dropPartitions(request.getDbName(), request.getTableName(), request.getPartNames(), client);
+      context.getLogger().log("Dropped partitions for table " + request.getTableName() + " in DB " + request.getDbName());
       DropPartitionsResponse response = new DropPartitionsResponse();
-      if (result != null) {
-        TSerializer serializer = new TSerializer(getTProtocolFactory());
-        response.setResult(serializer.toString(result, StandardCharsets.UTF_8.name()));
-      }
+      response.setSuccessful(successful);
       return response;
     }
     catch (Exception e) {

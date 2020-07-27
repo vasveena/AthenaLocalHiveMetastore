@@ -19,7 +19,6 @@
  */
 package com.amazonaws.athena.hms.handler;
 
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.athena.hms.ListDatabasesRequest;
 import com.amazonaws.athena.hms.ListDatabasesResponse;
@@ -29,16 +28,13 @@ import com.amazonaws.services.lambda.runtime.Context;
 import org.apache.hadoop.hive.metastore.api.Database;
 import org.apache.thrift.TException;
 import org.apache.thrift.TSerializer;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class ListDatabasesHandler extends BaseHMSHandler<ListDatabasesRequest, ListDatabasesResponse>

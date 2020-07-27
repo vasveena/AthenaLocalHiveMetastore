@@ -25,8 +25,6 @@ import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
 import org.apache.hadoop.hive.metastore.api.Database;
 import org.apache.thrift.TDeserializer;
-
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class CreateDatabaseFromDBHandler extends BaseHMSHandler<CreateDatabaseFromDBRequest, CreateDatabaseFromDBResponse>

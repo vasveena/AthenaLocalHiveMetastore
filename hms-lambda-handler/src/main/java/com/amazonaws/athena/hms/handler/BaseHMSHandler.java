@@ -19,7 +19,6 @@
  */
 package com.amazonaws.athena.hms.handler;
 
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;

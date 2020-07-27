@@ -21,16 +21,13 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.GetTablesRequest;
 import com.amazonaws.athena.hms.GetTablesResponse;
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
 import org.apache.hadoop.hive.metastore.api.Table;
 import org.apache.thrift.TSerializer;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class GetTablesHandler extends BaseHMSHandler<GetTablesRequest, GetTablesResponse>

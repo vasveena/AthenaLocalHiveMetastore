@@ -20,7 +20,6 @@
 package com.amazonaws.athena.hms;
 
 import org.apache.thrift.TException;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;

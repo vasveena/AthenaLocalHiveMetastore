@@ -36,12 +36,6 @@ public class TestHiveMetaStoreConf {
     // load configuration from hms.properties file
     HiveMetaStoreConf conf = HiveMetaStoreConf.load();
     assertNotNull(conf);
-    /*assertFalse(conf.isUseSasl());
-    assertFalse(conf.isUseFramedTransport());
-    assertFalse(conf.isUseCompactProtocol());
-    assertFalse(conf.isKerberosEnabled());
-    assertNull(conf.getMetastoreKerberosPrincipal());
-    assertEquals("thrift://my-hms-host:9083", conf.getMetastoreUri());*/
     assertEquals("s3://my-hms/lambda/functions/spill", conf.getResponseSpillLocation());
     assertEquals(4194304L, conf.getResponseSpillThreshold());
     assertEquals(DEFAULT_HMS_HANDLER_NAME_PREFIX, conf.getHandlerNamePrefix());

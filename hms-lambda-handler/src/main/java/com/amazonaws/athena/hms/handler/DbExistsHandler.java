@@ -21,10 +21,8 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.DbExistsRequest;
 import com.amazonaws.athena.hms.DbExistsResponse;
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;

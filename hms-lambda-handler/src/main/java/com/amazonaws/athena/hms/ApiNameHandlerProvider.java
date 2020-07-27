@@ -20,7 +20,6 @@
 package com.amazonaws.athena.hms;
 
 import com.amazonaws.athena.hms.handler.BaseHMSHandler;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;

@@ -21,15 +21,12 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.GetDatabaseRequest;
 import com.amazonaws.athena.hms.GetDatabaseResponse;
-// import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
 import org.apache.hadoop.hive.metastore.api.Database;
 import org.apache.thrift.TSerializer;
 import org.apache.hadoop.hive.metastore.api.Database;
-
 import java.nio.charset.StandardCharsets;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class GetDatabaseHandler extends BaseHMSHandler<GetDatabaseRequest, GetDatabaseResponse>

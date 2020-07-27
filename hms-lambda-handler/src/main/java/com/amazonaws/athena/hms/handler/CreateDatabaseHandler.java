@@ -21,11 +21,9 @@ package com.amazonaws.athena.hms.handler;
 
 import com.amazonaws.athena.hms.CreateDatabaseRequest;
 import com.amazonaws.athena.hms.CreateDatabaseResponse;
-//import com.amazonaws.athena.hms.HiveMetaStoreClient;
 import com.amazonaws.athena.hms.HiveMetaStoreConf;
 import com.amazonaws.services.lambda.runtime.Context;
 import org.apache.hadoop.hive.metastore.api.Database;
-
 import org.apache.hadoop.hive.metastore.HiveMetaStoreClient;
 
 public class CreateDatabaseHandler extends BaseHMSHandler<CreateDatabaseRequest, CreateDatabaseResponse>
