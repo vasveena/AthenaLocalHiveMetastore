@@ -35,7 +35,6 @@ import java.util.Map;
 public class HiveMetaStoreConf
 {
   public static final String HMS_PROPERTIES = "hms.properties";
-  public static final String HMS_KERBEROS_ENABLED = "hive.metastore.kerberos.enabled";
   public static final String HMS_RESPONSE_SPILL_LOCATION = "hive.metastore.response.spill.location";
   public static final String HMS_RESPONSE_SPILL_THRESHOLD = "hive.metastore.response.spill.threshold";
   public static final String HMS_HANDLER_NAME_PREFIX = "hive.metastore.handler.name.prefix";
