@@ -3,7 +3,7 @@ This project is an implementation of https://github.com/awslabs/aws-athena-hive-
 It uses Embedded Hive metastore client to connect to RDS Hive metastore directly from Athena/Lambda without the need for an EMR cluster or Thrift server. To make this approach truly serverless, it is highly recommended that an S3 location is chosen as Hive meta warehouse. 
 The source code includes the reference project implementation code and it is a Maven project with the following modules.
 
-*hms-service-api: the APIs between Lambda function and Athena service clients, which are defined in the HiveMetaStoreService interface. Since this is a service contract, please don’t change anything in this module.
+*hms-service-api: the APIs between Lambda function and Athena service clients, which are defined in the HiveMetaStoreService interface. Since this is a service contract, please don’t change anything in this module. 
 
 *hms-lambda-handler: a set of default lambda handlers to process each hive metastore API calls. The class MetadataHandler is the dispatcher for all different API calls. Customer don’t need to change this package either.
 
@@ -25,8 +25,8 @@ hms-lambda-func-1.0.jar: an example lightweight Lambda function and it relies on
 To run the standalone JAR with dependencies from Athena:
 
 1) mvn clean package  
-2) Create a Lambda function with the JAR hms-lambda-func/target/hms-lambda-func-1.0-SNAPSHOT-withdep.jar
-3) From Lambda, define the following environment variables with KMS encryption enabled both at-rest and in-transit
+2) Create a Lambda function with the JAR hms-lambda-func/target/hms-lambda-func-1.0-SNAPSHOT-withdep.jar. Please make sure to allocate 3008 MB memory (upper most limit) for Lambda as this approach is memory intensive compared to Thrift approach due to Hive metastore client initiation within Lambda itself
+3) From Lambda, define the following environment variables with KMS encryption enabled both at-rest and in-transit. Please use S3A protocol to specify warehouse location
 
 ```
 CONNECTION_URL - jdbc:mysql://your-rds-endpoint:3306/dbName?trustServerCertificate=true&useSSL=true&requireSSL=true&verifyServerCertificate=false
@@ -40,7 +40,7 @@ WAREHOUSE_LOCATION - s3a://my-hms-warehouse-location/prefixName
 Alternatively, following properties can be specified in hms-lambda-func/src/main/resources/hms.properties before the maven build i.e., step 1
 
 ```
-javax.jdo.option.ConnectionURL=jdbc:mysql://rds-endpoint:3306/dbName?trustServerCertificate=true&useSSL=true&requireSSL=true&verifyServerCertificate=false
+javax.jdo.option.ConnectionURL=jdbc:mysql://your-rds-endpoint:3306/dbName?trustServerCertificate=true&useSSL=true&requireSSL=true&verifyServerCertificate=false
 javax.jdo.option.ConnectionDriverName=org.mariadb.jdbc.Driver
 javax.jdo.option.ConnectionPassword=changeit
 javax.jdo.option.ConnectionUserName=changeit
