@@ -3,9 +3,12 @@ This project is an implementation of https://github.com/awslabs/aws-athena-hive-
 It uses Embedded Hive metastore client to connect to RDS Hive metastore directly from Athena/Lambda without the need for an EMR cluster or Thrift server. To make this approach truly serverless, it is highly recommended that an S3 location is chosen as Hive meta warehouse. 
 The source code includes the reference project implementation code and it is a Maven project with the following modules.
 
-hms-service-api: the APIs between Lambda function and Athena service clients, which are defined in the HiveMetaStoreService interface. Since this is a service contract, please don’t change anything in this module.
-hms-lambda-handler: a set of default lambda handlers to process each hive metastore API calls. The class MetadataHandler is the dispatcher for all different API calls. Customer don’t need to change this package either.
-hms-lambda-layer: a Maven assembly project to put hms-sevice-api, hms-lambda-handler, and their dependencies into a zip file so that this zip file could be registered as a Lambda layer and then could be used by multiple Lambda functions.
+*hms-service-api: the APIs between Lambda function and Athena service clients, which are defined in the HiveMetaStoreService interface. Since this is a service contract, please don’t change anything in this module.
+
+*hms-lambda-handler: a set of default lambda handlers to process each hive metastore API calls. The class MetadataHandler is the dispatcher for all different API calls. Customer don’t need to change this package either.
+
+*hms-lambda-layer: a Maven assembly project to put hms-sevice-api, hms-lambda-handler, and their dependencies into a zip file so that this zip file could be registered as a Lambda layer and then could be used by multiple Lambda functions.
+
 *hms-lambda-func: *an example Lambda function, where
 HiveMetaStoreLambdaFunc: the example lambda function and it simply extends MetadataHandler.
 EmbeddedHiveMetaStoreClientFactory: controls the behavior of the lambda function, for example, customer could provide their own set of HandlerProviders by overriding the getHandlerProvider() method.
@@ -25,20 +28,24 @@ To run the standalone JAR with dependencies from Athena:
 2) Create a Lambda function with the JAR hms-lambda-func/target/hms-lambda-func-1.0-SNAPSHOT-withdep.jar
 3) From Lambda, define the following environment variables with KMS encryption enabled both at-rest and in-transit
 
+```
 CONNECTION_URL - jdbc:mysql://your-rds-endpoint:3306/dbName?trustServerCertificate=true&useSSL=true&requireSSL=true&verifyServerCertificate=false
 DRIVER_NAME - org.mariadb.jdbc.Driver
 PASSWORD - password  
 SPILL LOCATION - s3://my-hms/lambda/functions/spill
 USER_NAME - username
 WAREHOUSE_LOCATION - s3a://my-hms-warehouse-location/prefixName
+```
 
 Alternatively, following properties can be specified in hms-lambda-func/src/main/resources/hms.properties before the maven build i.e., step 1
 
+```
 javax.jdo.option.ConnectionURL=jdbc:mysql://rds-endpoint:3306/dbName?trustServerCertificate=true&useSSL=true&requireSSL=true&verifyServerCertificate=false
 javax.jdo.option.ConnectionDriverName=org.mariadb.jdbc.Driver
 javax.jdo.option.ConnectionPassword=changeit
 javax.jdo.option.ConnectionUserName=changeit
 hive.metastore.warehouse.dir=s3a://my-hms-warehouse-location/prefixName
 hive.metastore.response.spill.location=s3://my-hms/lambda/functions/spill
+```
 
 4) Create a Hive Metastore data connector and provide this Lambda function 
