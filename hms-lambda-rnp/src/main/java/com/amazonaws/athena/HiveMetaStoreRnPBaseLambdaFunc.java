@@ -177,7 +177,6 @@ public abstract class HiveMetaStoreRnPBaseLambdaFunc implements RequestStreamHan
   {
     try (MetadataRequest metadataRequest = objectMapper.readValue(inputStream, MetadataRequest.class)) {
       // cloud watch logs, we need them for monitoring and debugging
-      context.getLogger().log("HMS configuration: " + conf.toString());
       context.getLogger().log("Lambda Func in mode: " + mode);
       context.getLogger().log("RequestContext: " + metadataRequest.getContext());
       String apiName = metadataRequest.getApiName();
